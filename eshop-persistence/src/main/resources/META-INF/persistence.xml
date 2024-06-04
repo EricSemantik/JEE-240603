@@ -11,9 +11,12 @@
 		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 		
 		<class>dev.formation.model.Adresse</class>
+		<class>dev.formation.model.Client</class>
 		<class>dev.formation.model.Commande</class>
 		<class>dev.formation.model.CommandeDetail</class>
 		<class>dev.formation.model.Commentaire</class>
+		<class>dev.formation.model.Fournisseur</class>
+		<class>dev.formation.model.Personne</class>
 		<class>dev.formation.model.Produit</class>
 		<class>dev.formation.model.Utilisateur</class>
 

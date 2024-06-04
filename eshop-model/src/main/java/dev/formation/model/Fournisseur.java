@@ -3,9 +3,15 @@ package dev.formation.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
 import jakarta.persistence.Transient;
 
+@Entity
+@DiscriminatorValue("fournisseur")
 public class Fournisseur extends Personne {
+	@Column(length = 200)
 	private String responsable;
 	@Transient
 	private List<Adresse> adresses = new ArrayList<>();

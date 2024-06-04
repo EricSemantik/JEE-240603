@@ -4,10 +4,17 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
 import jakarta.persistence.Transient;
 
+@Entity
+@DiscriminatorValue("client")
 public class Client extends Personne {
+	@Column(length = 255)
 	private String prenom;
+	@Column(name="dt_naissance")
 	private LocalDate dtNaissance;
 	@Transient
 	private Adresse adresse;
