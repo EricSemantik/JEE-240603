@@ -10,13 +10,15 @@ import dev.formation.repository.IProduitRepository;
 import dev.formation.repository.csv.PersonneRepositoryCsv;
 import dev.formation.repository.csv.ProduitRepositoryCsv;
 import dev.formation.repository.sql.AdresseRepositorySql;
+import dev.formation.repository.sql.PersonneRepositorySql;
 
 public class Application {
 	private static Application instance = null;
 
 //	private final IAdresseRepository adresseRepository = new AdresseRepositoryCsv("adresses.csv");
 	private final IAdresseRepository adresseRepository = new AdresseRepositorySql();
-	private final IPersonneRepository personneRepository = new PersonneRepositoryCsv("personnes.csv");
+//	private final IPersonneRepository personneRepository = new PersonneRepositoryCsv("personnes.csv");
+	private final IPersonneRepository personneRepository = new PersonneRepositorySql();
 	private final IProduitRepository produitRepository = new ProduitRepositoryCsv("produits.csv");
 
 	private Application() {
