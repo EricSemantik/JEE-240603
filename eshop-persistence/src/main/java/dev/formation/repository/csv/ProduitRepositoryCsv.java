@@ -15,7 +15,7 @@ public class ProduitRepositoryCsv implements IProduitRepository {
 		super();
 		this.file = new File(chemin);
 	}
-	
+
 	@Override
 	public List<Produit> findAll() {
 		// TODO Auto-generated method stub
@@ -37,7 +37,7 @@ public class ProduitRepositoryCsv implements IProduitRepository {
 	@Override
 	public void deleteById(Long id) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }
