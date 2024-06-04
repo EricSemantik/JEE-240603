@@ -4,10 +4,14 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.Transient;
+
 public class Client extends Personne {
 	private String prenom;
 	private LocalDate dtNaissance;
+	@Transient
 	private Adresse adresse;
+	@Transient
 	private List<Commande> commandes = new ArrayList<>();
 
 	public Client() {

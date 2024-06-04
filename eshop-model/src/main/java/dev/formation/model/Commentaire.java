@@ -2,12 +2,16 @@ package dev.formation.model;
 
 import java.time.LocalDateTime;
 
+import jakarta.persistence.Transient;
+
 public class Commentaire {
 	private Long id;
 	private LocalDateTime dtCommentaire = LocalDateTime.now();
 	private int note = 0;
 	private String detail;
+	@Transient
 	private Produit produit;
+	@Transient
 	private Client client;
 
 	public Long getId() {

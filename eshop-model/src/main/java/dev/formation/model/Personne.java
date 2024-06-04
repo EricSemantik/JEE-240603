@@ -1,10 +1,13 @@
 package dev.formation.model;
 
+import jakarta.persistence.Transient;
+
 public abstract class Personne {
 	private Long id;
 	private String nom;
 	private Civilite civilite;
 	private String email;
+	@Transient
 	private Utilisateur utilisateur;
 
 	public Personne() {

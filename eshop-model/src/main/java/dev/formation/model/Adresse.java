@@ -1,9 +1,21 @@
 package dev.formation.model;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
+@Entity
 public class Adresse {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	@Column(length = 200)
 	private String rue;
+	@Column(name="code_postal", length = 10)
 	private String codePostal;
+	@Column(length = 100)
 	private String ville;
 
 	public Adresse() {

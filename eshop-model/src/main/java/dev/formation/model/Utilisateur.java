@@ -3,11 +3,14 @@ package dev.formation.model;
 import java.util.HashSet;
 import java.util.Set;
 
+import jakarta.persistence.Transient;
+
 public class Utilisateur {
 	private Long id;
 	private String identifiant;
 	private String motDePasse;
 	private boolean active = true;
+	@Transient
 	private Set<Role> roles = new HashSet<>();
 
 	public Utilisateur() {

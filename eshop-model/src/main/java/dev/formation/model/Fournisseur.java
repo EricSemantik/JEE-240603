@@ -3,9 +3,13 @@ package dev.formation.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.Transient;
+
 public class Fournisseur extends Personne {
 	private String responsable;
+	@Transient
 	private List<Adresse> adresses = new ArrayList<>();
+	@Transient
 	private List<Produit> produits = new ArrayList<>();
 
 	public Fournisseur() {

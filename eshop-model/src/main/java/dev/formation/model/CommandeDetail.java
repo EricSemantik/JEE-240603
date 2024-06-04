@@ -1,10 +1,14 @@
 package dev.formation.model;
 
+import jakarta.persistence.Transient;
+
 public class CommandeDetail {
 	private Long id;
 	private int quantite;
 	private Double prix;
+	@Transient
 	private Commande commande;
+	@Transient
 	private Produit produit;
 
 	public CommandeDetail() {

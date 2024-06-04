@@ -3,14 +3,19 @@ package dev.formation.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.Transient;
+
 public class Produit {
 	private Long id;
 	private String nom;
 	private Double prix;
 	private String reference;
 	private String modele;
+	@Transient
 	private Fournisseur fournisseur;
+	@Transient
 	private List<CommandeDetail> commandeDetails = new ArrayList<>();
+	@Transient
 	private List<Commentaire> commentaires = new ArrayList<>();
 
 	public Produit() {

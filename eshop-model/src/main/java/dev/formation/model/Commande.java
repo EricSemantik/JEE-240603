@@ -4,12 +4,16 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.Transient;
+
 public class Commande {
 	private Long id;
 	private LocalDateTime dtCommande;
 	private Double prixTotal;
 	private EtatCommande etat;
+	@Transient
 	private Client client;
+	@Transient
 	private List<CommandeDetail> commandeDetails = new ArrayList<>();
 
 	public Commande() {
