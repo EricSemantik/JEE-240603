@@ -11,10 +11,13 @@ import dev.formation.repository.csv.PersonneRepositoryCsv;
 import dev.formation.repository.csv.ProduitRepositoryCsv;
 import dev.formation.repository.sql.AdresseRepositorySql;
 import dev.formation.repository.sql.PersonneRepositorySql;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.Persistence;
 
 public class Application {
 	private static Application instance = null;
 
+	private final EntityManagerFactory emf = Persistence.createEntityManagerFactory("eshop-pu");
 //	private final IAdresseRepository adresseRepository = new AdresseRepositoryCsv("adresses.csv");
 	private final IAdresseRepository adresseRepository = new AdresseRepositorySql();
 //	private final IPersonneRepository personneRepository = new PersonneRepositoryCsv("personnes.csv");
@@ -37,6 +40,10 @@ public class Application {
 		return instance;
 	}
 
+	public EntityManagerFactory getEmf() {
+		return emf;
+	}
+
 	public IAdresseRepository getAdresseRepository() {
 		return adresseRepository;
 	}
@@ -48,9 +55,9 @@ public class Application {
 	public IProduitRepository getProduitRepository() {
 		return produitRepository;
 	}
-	
+
 	public Connection getConnection() throws SQLException {
-		return DriverManager.getConnection("jdbc:mysql://localhost:3306/eshop?serverTimezone=GMT","root", "admin");
+		return DriverManager.getConnection("jdbc:mysql://localhost:3306/eshop?serverTimezone=GMT", "root", "admin");
 	}
 
 }
