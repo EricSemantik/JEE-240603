@@ -24,8 +24,6 @@ public class PersonneRepositoryCsv implements IPersonneRepository {
 
 	private File file;
 
-	private IAdresseRepository adresseRepository = Application.getInstance().getAdresseRepository();
-
 	public PersonneRepositoryCsv(String chemin) {
 		super();
 		this.file = new File(chemin);
@@ -130,7 +128,7 @@ public class PersonneRepositoryCsv implements IPersonneRepository {
 							client.setDtNaissance(LocalDate.parse(items[6]));
 						}
 						if (!items[7].isBlank()) {
-							Adresse adresse = adresseRepository.findById(Long.valueOf(items[7])).orElse(null);
+							Adresse adresse = Application.getInstance().getAdresseRepository().findById(Long.valueOf(items[7])).orElse(null);
 
 							client.setAdresse(adresse);
 						}
