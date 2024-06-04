@@ -2,15 +2,33 @@ package dev.formation.model;
 
 import java.time.LocalDateTime;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 
+@Entity
+@Table(name = "commentaire")
 public class Commentaire {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+
+	@Column(name = "dt_commentaire", nullable = false)
 	private LocalDateTime dtCommentaire = LocalDateTime.now();
+
+	@Column(nullable = false)
 	private int note = 0;
+
+	@Column(length = 255)
 	private String detail;
+
 	@Transient
 	private Produit produit;
+
 	@Transient
 	private Client client;
 

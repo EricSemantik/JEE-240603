@@ -3,18 +3,38 @@ package dev.formation.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 
+@Entity
+@Table(name = "produit")
 public class Produit {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+
+	@Column(length = 150)
 	private String nom;
+
 	private Double prix;
+
+	@Column(name = "ref", length = 100)
 	private String reference;
+
+	@Column(length = 100)
 	private String modele;
+
 	@Transient
 	private Fournisseur fournisseur;
+
 	@Transient
 	private List<CommandeDetail> commandeDetails = new ArrayList<>();
+
 	@Transient
 	private List<Commentaire> commentaires = new ArrayList<>();
 
