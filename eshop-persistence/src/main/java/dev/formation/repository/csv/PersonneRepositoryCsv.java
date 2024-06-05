@@ -204,4 +204,10 @@ public class PersonneRepositoryCsv implements IPersonneRepository {
 
 	}
 
+	@Override
+	public Optional<Personne> findByIdentifiant(String identifiant) {
+		// TODO Auto-generated method stub
+		return Optional.empty();
+	}
+
 }

@@ -40,4 +40,10 @@ public class ProduitRepositoryCsv implements IProduitRepository {
 
 	}
 
+	@Override
+	public List<Produit> findAllByNoteLeatherThan(int note) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
