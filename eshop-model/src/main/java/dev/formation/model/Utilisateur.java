@@ -4,12 +4,16 @@ import java.util.HashSet;
 import java.util.Set;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
 
 @Entity
 @Table(name = "utilisateur")
@@ -26,7 +30,10 @@ public class Utilisateur {
 
 	private boolean active = true;
 
-	@Transient
+	@ElementCollection
+	@JoinTable(name = "utilisateur_roles", joinColumns = @JoinColumn(name = "utilisateur_id"))
+	@Column(name = "role", nullable = false)
+	@Enumerated(EnumType.STRING)
 	private Set<Role> roles = new HashSet<>();
 
 	public Utilisateur() {

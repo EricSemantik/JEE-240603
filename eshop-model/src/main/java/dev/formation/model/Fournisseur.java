@@ -6,16 +6,19 @@ import java.util.List;
 import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Transient;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.OneToMany;
 
 @Entity
 @DiscriminatorValue("fournisseur")
 public class Fournisseur extends Personne {
 	@Column(length = 200)
 	private String responsable;
-	@Transient
+	@OneToMany
+	@JoinTable(name = "fournisseur_adresses", joinColumns = @JoinColumn(name = "fournisseur_id"), inverseJoinColumns = @JoinColumn(name = "adresse_id"))
 	private List<Adresse> adresses = new ArrayList<>();
-	@Transient
+	@OneToMany(mappedBy = "fournisseur")
 	private List<Produit> produits = new ArrayList<>();
 
 	public Fournisseur() {

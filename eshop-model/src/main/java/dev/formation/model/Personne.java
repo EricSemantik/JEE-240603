@@ -11,8 +11,9 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
 
 @Entity
 @Table(name = "personne")
@@ -28,7 +29,8 @@ public abstract class Personne {
 	private Civilite civilite;
 	@Column(length = 255)
 	private String email;
-	@Transient
+	@OneToOne
+	@JoinColumn(name="utilisateur_id")
 	private Utilisateur utilisateur;
 
 	public Personne() {

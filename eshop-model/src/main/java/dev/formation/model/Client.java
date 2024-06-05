@@ -7,18 +7,21 @@ import java.util.List;
 import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Transient;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 
 @Entity
 @DiscriminatorValue("client")
 public class Client extends Personne {
 	@Column(length = 255)
 	private String prenom;
-	@Column(name="dt_naissance")
+	@Column(name = "dt_naissance")
 	private LocalDate dtNaissance;
-	@Transient
+	@OneToOne
+	@JoinColumn(name = "adresse_id")
 	private Adresse adresse;
-	@Transient
+	@OneToMany(mappedBy = "client")
 	private List<Commande> commandes = new ArrayList<>();
 
 	public Client() {

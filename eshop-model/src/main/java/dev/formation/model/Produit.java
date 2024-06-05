@@ -8,8 +8,10 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
 
 @Entity
 @Table(name = "produit")
@@ -29,13 +31,14 @@ public class Produit {
 	@Column(length = 100)
 	private String modele;
 
-	@Transient
+	@ManyToOne
+	@JoinColumn(name = "fournisseur_id")
 	private Fournisseur fournisseur;
 
-	@Transient
+	@OneToMany(mappedBy = "produit")
 	private List<CommandeDetail> commandeDetails = new ArrayList<>();
 
-	@Transient
+	@OneToMany(mappedBy = "produit")
 	private List<Commentaire> commentaires = new ArrayList<>();
 
 	public Produit() {
