@@ -5,9 +5,11 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+import dev.formation.model.Adresse;
 import dev.formation.model.Civilite;
 import dev.formation.model.Client;
 import dev.formation.model.Personne;
+import dev.formation.repository.IAdresseRepository;
 import dev.formation.repository.IPersonneRepository;
 import jakarta.inject.Inject;
 import jakarta.servlet.ServletException;
@@ -20,6 +22,9 @@ import jakarta.servlet.http.HttpServletResponse;
 public class ClientController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
+	@Inject
+	private IAdresseRepository adresseRepository;
+	
 	@Inject
 	private IPersonneRepository personneRepository;
 
@@ -61,6 +66,7 @@ public class ClientController extends HttpServlet {
 
 	private void add(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setAttribute("civilites", Civilite.values());
+		request.setAttribute("adresses", adresseRepository.findAll());
 		
 		getServletContext().getRequestDispatcher("/WEB-INF/views/client/form.jsp").forward(request, response);
 	}
@@ -75,6 +81,7 @@ public class ClientController extends HttpServlet {
 		}
 		
 		request.setAttribute("civilites", Civilite.values());
+		request.setAttribute("adresses", adresseRepository.findAll());
 
 		getServletContext().getRequestDispatcher("/WEB-INF/views/client/form.jsp").forward(request, response);
 	}
@@ -92,6 +99,9 @@ public class ClientController extends HttpServlet {
 		LocalDate dtNaissance = !request.getParameter("dtNaissance").isEmpty()
 				? LocalDate.parse(request.getParameter("dtNaissance"))
 				: null;
+		Long adresseId = request.getParameter("adresseId") != null && !request.getParameter("adresseId").isEmpty()
+				? Long.valueOf(request.getParameter("adresseId"))
+				: null;
 
 		Client client = new Client();
 
@@ -108,6 +118,16 @@ public class ClientController extends HttpServlet {
 		client.setPrenom(prenom);
 		client.setEmail(email);
 		client.setDtNaissance(dtNaissance);
+		
+		if(adresseId != null) {
+			Optional<Adresse> optAdresse = adresseRepository.findById(adresseId);
+
+			if (optAdresse.isPresent()) {
+				client.setAdresse(optAdresse.get());
+			}
+		} else {
+			client.setAdresse(null);
+		}
 
 		personneRepository.save(client);
 

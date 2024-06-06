@@ -69,6 +69,15 @@
 							class="form-control" id="dtNaissance" name="dtNaissance"
 							value="${client.dtNaissance}" />
 					</div>
+					<div class="form-group">
+						<label for="adresseId">Adresse:</label> 
+						<select class="form-control" id="adresseId" name="adresseId">
+							<option value=""></option>
+							<c:forEach items="${adresses}" var="adr">
+								<option value="${adr.id}" ${client.adresse.id==adr.id?'selected':''}>${adr.rue} ${adr.codePostal} ${adr.ville}</option>
+							</c:forEach>
+						</select>
+					</div>
 				</div>
 				<div class="card-footer">
 					<div class="btn-group btn-group-lg float-right">

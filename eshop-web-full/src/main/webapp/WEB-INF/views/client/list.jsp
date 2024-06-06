@@ -46,6 +46,7 @@
 							<th>Prénom</th>
 							<th>Email</th>
 							<th>Date de naissance</th>
+							<th>Adresse</th>
 							<th></th>
 						</tr>
 					</thead>
@@ -69,6 +70,7 @@
 								<td>${c.prenom}</td>
 								<td>${c.email}</td>
 								<td><fmt:formatDate value="${parsedDate}" type="date" pattern="dd/MM/yyyy"/></td>
+								<td>${c.adresse.rue} ${c.adresse.codePostal} ${c.adresse.ville}</td>
 								<td><div class="btn-group btn-group-sm">
 										<a href="${editUrl}" class="btn btn-primary"><i
 											class="bi bi-pencil-square"></i></a> <a href="${removeUrl}"
