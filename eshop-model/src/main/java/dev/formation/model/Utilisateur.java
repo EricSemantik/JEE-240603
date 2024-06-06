@@ -18,7 +18,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "utilisateur")
-@NamedQuery(name = "findByIdentifiant", query = "select u fro Utilisateur u where u.identifiant = ?1")
+@NamedQuery(name = "findByIdentifiant", query = "select u from Utilisateur u where u.identifiant = ?1")
 public class Utilisateur {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
