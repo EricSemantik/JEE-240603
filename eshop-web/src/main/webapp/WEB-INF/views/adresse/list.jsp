@@ -44,7 +44,7 @@
 							<c:param name="mode" value="edit"/>
 							<c:param name="id" value="${adr.id}"/>
 						</c:url>
-						<c:url value="/remove" var="removeUrl">
+						<c:url value="/adresse" var="removeUrl">
 							<c:param name="mode" value="remove"/>
 							<c:param name="id" value="${adr.id}"/>
 						</c:url>

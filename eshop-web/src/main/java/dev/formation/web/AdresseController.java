@@ -57,26 +57,49 @@ public class AdresseController extends HttpServlet {
 	}
 
 	private void edit(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		Long id = request.getParameter("id")!=null?Long.valueOf(request.getParameter("id")):null;
-		
+		Long id = request.getParameter("id") != null ? Long.valueOf(request.getParameter("id")) : null;
+
 		Optional<Adresse> optAdresse = Application.getInstance().getAdresseRepository().findById(id);
-		
-		if(optAdresse.isPresent()) {
+
+		if (optAdresse.isPresent()) {
 			request.setAttribute("adresse", optAdresse.get());
 		}
-		
+
 		getServletContext().getRequestDispatcher("/WEB-INF/views/adresse/form.jsp").forward(request, response);
 	}
 
-	private void save(HttpServletRequest request, HttpServletResponse response) {
-
+	private void save(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		Long id = request.getParameter("id") != null && !request.getParameter("id").isEmpty() ? Long.valueOf(request.getParameter("id")) : null;
+		String rue = request.getParameter("rue");
+		String codePostal = request.getParameter("codePostal");
+		String ville = request.getParameter("ville");
+		
+		Adresse adresse = new Adresse();
+		
+		if(id != null) {
+			adresse = Application.getInstance().getAdresseRepository().findById(id).get();
+		} 
+		
+		adresse.setRue(rue);
+		adresse.setCodePostal(codePostal);
+		adresse.setVille(ville);
+		
+		Application.getInstance().getAdresseRepository().save(adresse);
+		
+		getServletContext().getRequestDispatcher("/adresse?mode=list").forward(request, response);
 	}
 
 	private void cancel(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		getServletContext().getRequestDispatcher("/adresse?mode=list").forward(request, response);
 	}
 
-	private void remove(HttpServletRequest request, HttpServletResponse response) {
-
+	private void remove(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		Long id = request.getParameter("id") != null ? Long.valueOf(request.getParameter("id")) : null;
+		
+		if(id != null) {
+			Application.getInstance().getAdresseRepository().deleteById(id);
+		}
+		
+		response.sendRedirect("adresse");
 	}
 }
