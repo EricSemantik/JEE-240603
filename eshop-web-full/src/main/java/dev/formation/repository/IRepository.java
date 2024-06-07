@@ -10,5 +10,5 @@ public interface IRepository<T, PK> {
 
 	T save(T obj);
 
-	void deleteById(PK id);
+	boolean deleteById(PK id);
 }

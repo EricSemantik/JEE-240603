@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import dev.formation.exception.EShopDataException;
 import dev.formation.model.Client;
 import dev.formation.model.Fournisseur;
 import dev.formation.model.Personne;
@@ -43,6 +44,7 @@ public class PersonneRepositoryJpa implements IPersonneRepository {
 				tx.rollback();
 			}
 			e.printStackTrace();
+			throw new EShopDataException(e);
 		} finally {
 			if (em != null) {
 				em.close();
@@ -73,6 +75,7 @@ public class PersonneRepositoryJpa implements IPersonneRepository {
 				tx.rollback();
 			}
 			e.printStackTrace();
+			throw new EShopDataException(e);
 		} finally {
 			if (em != null) {
 				em.close();
@@ -100,6 +103,7 @@ public class PersonneRepositoryJpa implements IPersonneRepository {
 				tx.rollback();
 			}
 			e.printStackTrace();
+			throw new EShopDataException(e);
 		} finally {
 			if (em != null) {
 				em.close();
@@ -110,7 +114,8 @@ public class PersonneRepositoryJpa implements IPersonneRepository {
 	}
 
 	@Override
-	public void deleteById(Long id) {
+	public boolean deleteById(Long id) {
+		int rows = 0;
 		EntityManager em = null;
 		EntityTransaction tx = null;
 
@@ -122,7 +127,7 @@ public class PersonneRepositoryJpa implements IPersonneRepository {
 			Query query = em.createQuery("delete from Personne p where p.id = ?1");
 			query.setParameter(1, id);
 
-			query.executeUpdate();
+			rows = query.executeUpdate();
 
 			tx.commit();
 		} catch (Exception e) {
@@ -130,11 +135,14 @@ public class PersonneRepositoryJpa implements IPersonneRepository {
 				tx.rollback();
 			}
 			e.printStackTrace();
+			throw new EShopDataException(e);
 		} finally {
 			if (em != null) {
 				em.close();
 			}
 		}
+		
+		return rows > 0;
 	}
 
 	@Override
