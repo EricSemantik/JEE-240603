@@ -3,6 +3,9 @@ package dev.formation.api;
 import java.net.URI;
 import java.util.Optional;
 
+import com.fasterxml.jackson.annotation.JsonView;
+
+import dev.formation.api.views.Views;
 import dev.formation.exception.EShopException;
 import dev.formation.model.Utilisateur;
 import dev.formation.repository.IUtilisateurRepository;
@@ -29,7 +32,8 @@ public class UtilisateurResource {
 	private IUtilisateurRepository utilisateurRepository;
 
 	@GET
-	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+	@Produces({ MediaType.APPLICATION_JSON })
+	@JsonView(Views.ViewUtilisateur.class)
 	public Response getAll() {
 		return Response.ok(utilisateurRepository.findAll()).build();
 	}
@@ -37,8 +41,9 @@ public class UtilisateurResource {
 	@GET
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
+	@JsonView(Views.ViewUtilisateurDetail.class)
 	public Response get(@PathParam("id") Long id) {
-		Optional<Utilisateur> optUtilisateur = utilisateurRepository.findById(id);
+		Optional<Utilisateur> optUtilisateur = utilisateurRepository.findByIdWithRoles(id);
 
 		if (optUtilisateur.isEmpty()) {
 			return Response.status(Status.NOT_FOUND).build();

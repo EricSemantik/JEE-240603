@@ -1,5 +1,8 @@
 package dev.formation.model;
 
+import com.fasterxml.jackson.annotation.JsonView;
+
+import dev.formation.api.views.Views;
 import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorColumn;
 import jakarta.persistence.DiscriminatorType;
@@ -22,15 +25,20 @@ import jakarta.persistence.Table;
 public abstract class Personne {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@JsonView(Views.ViewBasic.class)
 	private Long id;
 	@Column(length = 255)
+	@JsonView(Views.ViewBasic.class)
 	private String nom;
 	@Enumerated(EnumType.STRING)
+	@JsonView(Views.ViewBasic.class)
 	private Civilite civilite;
 	@Column(length = 255)
+	@JsonView(Views.ViewBasic.class)
 	private String email;
 	@OneToOne
 	@JoinColumn(name="utilisateur_id")
+	@JsonView(Views.ViewPersonne.class)
 	private Utilisateur utilisateur;
 
 	public Personne() {

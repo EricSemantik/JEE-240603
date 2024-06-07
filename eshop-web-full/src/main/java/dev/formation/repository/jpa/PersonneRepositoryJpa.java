@@ -239,4 +239,38 @@ public class PersonneRepositoryJpa implements IPersonneRepository {
 		return optPersonne;
 	}
 
+	@Override
+	public Optional<Fournisseur> findFournisseurByIdWithProduits(Long id) {
+		Optional<Fournisseur> optFournisseur = Optional.empty();
+
+		EntityManager em = null;
+		EntityTransaction tx = null;
+
+		try {
+			em = emf.createEntityManager();
+			tx = em.getTransaction();
+			tx.begin();
+
+			TypedQuery<Fournisseur> query = em.createQuery("select distinct f from Fournisseur f left join fetch f.produits where f.id = ?1",
+					Fournisseur.class);
+			query.setParameter(1, id);
+			Fournisseur fournisseur = query.getSingleResult();
+
+			optFournisseur = Optional.of(fournisseur);
+
+			tx.commit();
+		} catch (Exception e) {
+			if (tx != null && tx.isActive()) {
+				tx.rollback();
+			}
+			e.printStackTrace();
+		} finally {
+			if (em != null) {
+				em.close();
+			}
+		}
+
+		return optFournisseur;
+	}
+
 }

@@ -1,5 +1,8 @@
 package dev.formation.model;
 
+import com.fasterxml.jackson.annotation.JsonView;
+
+import dev.formation.api.views.Views;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -12,12 +15,16 @@ import jakarta.persistence.Table;
 public class Adresse {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@JsonView(Views.ViewBasic.class)
 	private Long id;
 	@Column(length = 200)
+	@JsonView(Views.ViewBasic.class)
 	private String rue;
 	@Column(name = "code_postal", length = 10)
+	@JsonView(Views.ViewBasic.class)
 	private String codePostal;
 	@Column(length = 100)
+	@JsonView(Views.ViewBasic.class)
 	private String ville;
 
 	public Adresse() {

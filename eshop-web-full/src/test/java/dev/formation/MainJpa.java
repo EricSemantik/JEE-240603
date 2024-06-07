@@ -9,6 +9,7 @@ import dev.formation.model.Civilite;
 import dev.formation.model.Client;
 import dev.formation.model.Commande;
 import dev.formation.model.EtatCommande;
+import dev.formation.model.Fournisseur;
 import dev.formation.model.Role;
 import dev.formation.model.Utilisateur;
 import jakarta.persistence.EntityManager;
@@ -40,14 +41,23 @@ public class MainJpa {
 
 			adrFournisseur.setRue("ddsqdsqdsq"); // dirty checking - synchro auto
 			
-			Utilisateur utiAdmin = new Utilisateur("admin", "123456", true, Role.SUPER_ADMIN);
-			utiAdmin = em.merge(utiAdmin);
+//			Utilisateur utiAdmin = new Utilisateur("admin", "123456", true, Role.SUPER_ADMIN);
+//			utiAdmin = em.merge(utiAdmin);
+//			
+//			Utilisateur utiAngel= new Utilisateur("angel", "123456", true, Role.ADMIN);
+//			utiAngel = em.merge(utiAngel);
+//
+//			Utilisateur utiClient = new Utilisateur("esultan", "123456", true, Role.CLIENT);
+//			utiClient = em.merge(utiClient);
 			
-			Utilisateur utiAngel= new Utilisateur("angel", "123456", true, Role.ADMIN);
-			utiAngel = em.merge(utiAngel);
+			Fournisseur fournisseur = new Fournisseur();
+			fournisseur.setNom("AMAZON");
+			fournisseur.setResponsable("BEZOS");
+			fournisseur.setEmail("contact@amazon.fr");
+			fournisseur.getAdresses().add(adrFournisseur);
+			
+			fournisseur = em.merge(fournisseur);
 
-			Utilisateur utiClient = new Utilisateur("esultan", "123456", true, Role.CLIENT);
-			utiClient = em.merge(utiClient);
 			
 
 			tx.commit();

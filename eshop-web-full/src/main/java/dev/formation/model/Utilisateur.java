@@ -3,12 +3,14 @@ package dev.formation.model;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonView;
+
+import dev.formation.api.views.Views;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -23,20 +25,25 @@ import jakarta.persistence.Table;
 public class Utilisateur {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@JsonView(Views.ViewBasic.class)
 	private Long id;
 
 	@Column(length = 50, nullable = false, unique = true)
+	@JsonView(Views.ViewBasic.class)
 	private String identifiant;
 
 	@Column(name = "mot_de_passe", length = 200, nullable = false)
+	@JsonView(Views.ViewBasic.class)
 	private String motDePasse;
 
+	@JsonView(Views.ViewBasic.class)
 	private boolean active = true;
 
-	@ElementCollection(fetch = FetchType.EAGER)
+	@ElementCollection
 	@JoinTable(name = "utilisateur_roles", joinColumns = @JoinColumn(name = "utilisateur_id"))
 	@Column(name = "role", nullable = false)
 	@Enumerated(EnumType.STRING)
+	@JsonView(Views.ViewUtilisateurDetail.class)
 	private Set<Role> roles = new HashSet<>();
 
 	public Utilisateur() {

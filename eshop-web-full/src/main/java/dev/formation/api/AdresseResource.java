@@ -3,6 +3,9 @@ package dev.formation.api;
 import java.net.URI;
 import java.util.Optional;
 
+import com.fasterxml.jackson.annotation.JsonView;
+
+import dev.formation.api.views.Views;
 import dev.formation.exception.EShopException;
 import dev.formation.model.Adresse;
 import dev.formation.repository.IAdresseRepository;
@@ -29,7 +32,8 @@ public class AdresseResource {
 	private IAdresseRepository adresseRepository;
 
 	@GET
-	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	@Produces({MediaType.APPLICATION_XML})
+	@JsonView(Views.ViewAdresse.class)
 	public Response getAll() {
 		return Response.ok(adresseRepository.findAll()).build();
 	}

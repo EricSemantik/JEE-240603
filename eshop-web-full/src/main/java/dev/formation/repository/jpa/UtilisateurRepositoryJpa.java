@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import dev.formation.exception.EShopDataException;
+import dev.formation.model.Adresse;
 import dev.formation.model.Utilisateur;
 import dev.formation.repository.IUtilisateurRepository;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -174,6 +175,40 @@ public class UtilisateurRepositoryJpa implements IUtilisateurRepository {
 			}
 		}
 
+		return optUtilisateur;
+	}
+
+	@Override
+	public Optional<Utilisateur> findByIdWithRoles(Long id) {
+		Optional<Utilisateur> optUtilisateur = Optional.empty();
+		
+		EntityManager em = null;
+		EntityTransaction tx = null;
+
+		try {
+			em = emf.createEntityManager();
+			tx = em.getTransaction();
+			tx.begin();
+
+			TypedQuery<Utilisateur> query = em.createQuery("select distinct u from Utilisateur u left join fetch u.roles where u.id = ?1", Utilisateur.class);
+			query.setParameter(1, id);
+			
+			Utilisateur utilisateur = query.getSingleResult();
+			optUtilisateur = Optional.of(utilisateur);
+			
+			tx.commit();
+		} catch (Exception e) {
+			if (tx != null && tx.isActive()) {
+				tx.rollback();
+			}
+			e.printStackTrace();
+			throw new EShopDataException(e);
+		} finally {
+			if (em != null) {
+				em.close();
+			}
+		}
+		
 		return optUtilisateur;
 	}
 
