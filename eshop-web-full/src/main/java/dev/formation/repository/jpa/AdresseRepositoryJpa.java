@@ -140,7 +140,7 @@ public class AdresseRepositoryJpa implements IAdresseRepository {
 
 	@Override
 	public List<Adresse> findAllByVille(String ville) { // select adr from Adresse adr where adr.ville = ?1
-List<Adresse> adresses = new ArrayList<Adresse>();
+		List<Adresse> adresses = new ArrayList<Adresse>();
 		
 		EntityManager em = null;
 		EntityTransaction tx = null;

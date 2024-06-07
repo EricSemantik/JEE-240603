@@ -4,15 +4,21 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import dev.formation.Application;
 import dev.formation.model.Utilisateur;
 import dev.formation.repository.IUtilisateurRepository;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
 
+@ApplicationScoped
 public class UtilisateurRepositoryJpa implements IUtilisateurRepository {
+
+	@Inject
+	private EntityManagerFactory emf;
 
 	@Override
 	public List<Utilisateur> findAll() {
@@ -22,7 +28,7 @@ public class UtilisateurRepositoryJpa implements IUtilisateurRepository {
 		EntityTransaction tx = null;
 
 		try {
-			em = Application.getInstance().getEmf().createEntityManager();
+			em = emf.createEntityManager();
 			tx = em.getTransaction();
 			tx.begin();
 
@@ -52,7 +58,7 @@ public class UtilisateurRepositoryJpa implements IUtilisateurRepository {
 		EntityTransaction tx = null;
 
 		try {
-			em = Application.getInstance().getEmf().createEntityManager();
+			em = emf.createEntityManager();
 			tx = em.getTransaction();
 			tx.begin();
 
@@ -80,7 +86,7 @@ public class UtilisateurRepositoryJpa implements IUtilisateurRepository {
 		EntityTransaction tx = null;
 
 		try {
-			em = Application.getInstance().getEmf().createEntityManager();
+			em = emf.createEntityManager();
 			tx = em.getTransaction();
 			tx.begin();
 
@@ -107,7 +113,7 @@ public class UtilisateurRepositoryJpa implements IUtilisateurRepository {
 		EntityTransaction tx = null;
 
 		try {
-			em = Application.getInstance().getEmf().createEntityManager();
+			em = emf.createEntityManager();
 			tx = em.getTransaction();
 			tx.begin();
 
@@ -131,8 +137,35 @@ public class UtilisateurRepositoryJpa implements IUtilisateurRepository {
 
 	@Override
 	public Optional<Utilisateur> findByIdentifiant(String identifiant) {
-		// TODO Auto-generated method stub
-		return Optional.empty();
+		Optional<Utilisateur> optUtilisateur = Optional.empty();
+
+		EntityManager em = null;
+		EntityTransaction tx = null;
+
+		try {
+			em = emf.createEntityManager();
+			tx = em.getTransaction();
+			tx.begin();
+
+			TypedQuery<Utilisateur> query = em.createNamedQuery("findByIdentifiant", Utilisateur.class);
+			query.setParameter("login", identifiant);
+			Utilisateur utilisateur = query.getSingleResult();
+
+			optUtilisateur = Optional.of(utilisateur);
+
+			tx.commit();
+		} catch (Exception e) {
+			if (tx != null && tx.isActive()) {
+				tx.rollback();
+			}
+			e.printStackTrace();
+		} finally {
+			if (em != null) {
+				em.close();
+			}
+		}
+
+		return optUtilisateur;
 	}
 
 }

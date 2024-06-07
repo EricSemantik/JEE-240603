@@ -4,16 +4,22 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import dev.formation.Application;
 import dev.formation.model.Commentaire;
 import dev.formation.repository.ICommentaireRepository;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
 
+@ApplicationScoped
 public class CommentaireRepositoryJpa implements ICommentaireRepository {
 
+	@Inject
+	private EntityManagerFactory emf;
+	
 	@Override
 	public List<Commentaire> findAll() {
 		List<Commentaire> commentaires = new ArrayList<Commentaire>();
@@ -22,7 +28,7 @@ public class CommentaireRepositoryJpa implements ICommentaireRepository {
 		EntityTransaction tx = null;
 
 		try {
-			em = Application.getInstance().getEmf().createEntityManager();
+			em = emf.createEntityManager();
 			tx = em.getTransaction();
 			tx.begin();
 
@@ -52,7 +58,7 @@ public class CommentaireRepositoryJpa implements ICommentaireRepository {
 		EntityTransaction tx = null;
 
 		try {
-			em = Application.getInstance().getEmf().createEntityManager();
+			em = emf.createEntityManager();
 			tx = em.getTransaction();
 			tx.begin();
 
@@ -80,7 +86,7 @@ public class CommentaireRepositoryJpa implements ICommentaireRepository {
 		EntityTransaction tx = null;
 
 		try {
-			em = Application.getInstance().getEmf().createEntityManager();
+			em = emf.createEntityManager();
 			tx = em.getTransaction();
 			tx.begin();
 
@@ -107,7 +113,7 @@ public class CommentaireRepositoryJpa implements ICommentaireRepository {
 		EntityTransaction tx = null;
 
 		try {
-			em = Application.getInstance().getEmf().createEntityManager();
+			em = emf.createEntityManager();
 			tx = em.getTransaction();
 			tx.begin();
 

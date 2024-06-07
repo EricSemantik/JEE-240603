@@ -4,16 +4,22 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import dev.formation.Application;
 import dev.formation.model.CommandeDetail;
 import dev.formation.repository.ICommandeDetailRepository;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
 
+@ApplicationScoped
 public class CommandeDetailRepositoryJpa implements ICommandeDetailRepository {
 
+	@Inject
+	private EntityManagerFactory emf;
+	
 	@Override
 	public List<CommandeDetail> findAll() {
 		List<CommandeDetail> commandes = new ArrayList<CommandeDetail>();
@@ -22,7 +28,7 @@ public class CommandeDetailRepositoryJpa implements ICommandeDetailRepository {
 		EntityTransaction tx = null;
 
 		try {
-			em = Application.getInstance().getEmf().createEntityManager();
+			em = emf.createEntityManager();
 			tx = em.getTransaction();
 			tx.begin();
 
@@ -52,7 +58,7 @@ public class CommandeDetailRepositoryJpa implements ICommandeDetailRepository {
 		EntityTransaction tx = null;
 
 		try {
-			em = Application.getInstance().getEmf().createEntityManager();
+			em = emf.createEntityManager();
 			tx = em.getTransaction();
 			tx.begin();
 
@@ -80,7 +86,7 @@ public class CommandeDetailRepositoryJpa implements ICommandeDetailRepository {
 		EntityTransaction tx = null;
 
 		try {
-			em = Application.getInstance().getEmf().createEntityManager();
+			em = emf.createEntityManager();
 			tx = em.getTransaction();
 			tx.begin();
 
@@ -107,7 +113,7 @@ public class CommandeDetailRepositoryJpa implements ICommandeDetailRepository {
 		EntityTransaction tx = null;
 
 		try {
-			em = Application.getInstance().getEmf().createEntityManager();
+			em = emf.createEntityManager();
 			tx = em.getTransaction();
 			tx.begin();
 

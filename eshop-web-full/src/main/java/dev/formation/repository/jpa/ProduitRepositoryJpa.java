@@ -4,16 +4,22 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import dev.formation.Application;
 import dev.formation.model.Produit;
 import dev.formation.repository.IProduitRepository;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
 
+@ApplicationScoped
 public class ProduitRepositoryJpa implements IProduitRepository {
 
+	@Inject
+	private EntityManagerFactory emf;
+	
 	@Override
 	public List<Produit> findAll() {
 		List<Produit> produits = new ArrayList<Produit>();
@@ -22,7 +28,7 @@ public class ProduitRepositoryJpa implements IProduitRepository {
 		EntityTransaction tx = null;
 
 		try {
-			em = Application.getInstance().getEmf().createEntityManager();
+			em = emf.createEntityManager();
 			tx = em.getTransaction();
 			tx.begin();
 
@@ -52,7 +58,7 @@ public class ProduitRepositoryJpa implements IProduitRepository {
 		EntityTransaction tx = null;
 
 		try {
-			em = Application.getInstance().getEmf().createEntityManager();
+			em = emf.createEntityManager();
 			tx = em.getTransaction();
 			tx.begin();
 
@@ -80,7 +86,7 @@ public class ProduitRepositoryJpa implements IProduitRepository {
 		EntityTransaction tx = null;
 
 		try {
-			em = Application.getInstance().getEmf().createEntityManager();
+			em = emf.createEntityManager();
 			tx = em.getTransaction();
 			tx.begin();
 
@@ -107,7 +113,7 @@ public class ProduitRepositoryJpa implements IProduitRepository {
 		EntityTransaction tx = null;
 
 		try {
-			em = Application.getInstance().getEmf().createEntityManager();
+			em = emf.createEntityManager();
 			tx = em.getTransaction();
 			tx.begin();
 
@@ -131,8 +137,34 @@ public class ProduitRepositoryJpa implements IProduitRepository {
 
 	@Override
 	public List<Produit> findAllByNoteLeatherThan(int note) {
-		// TODO Auto-generated method stub
-		return null;
+		List<Produit> produits = new ArrayList<Produit>();
+
+		EntityManager em = null;
+		EntityTransaction tx = null;
+
+		try {
+			em = emf.createEntityManager();
+			tx = em.getTransaction();
+			tx.begin();
+
+			TypedQuery<Produit> query = em.createQuery("select p from Produit p join p.commentaires c where c.note < ?1", Produit.class);
+			query.setParameter(1, note);
+			
+			produits = query.getResultList();
+
+			tx.commit();
+		} catch (Exception e) {
+			if (tx != null && tx.isActive()) {
+				tx.rollback();
+			}
+			e.printStackTrace();
+		} finally {
+			if (em != null) {
+				em.close();
+			}
+		}
+
+		return produits;
 	}
 
 }
