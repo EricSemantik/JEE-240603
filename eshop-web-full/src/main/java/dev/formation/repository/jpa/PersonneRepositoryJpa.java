@@ -141,7 +141,7 @@ public class PersonneRepositoryJpa implements IPersonneRepository {
 				em.close();
 			}
 		}
-		
+
 		return rows > 0;
 	}
 
@@ -251,12 +251,80 @@ public class PersonneRepositoryJpa implements IPersonneRepository {
 			tx = em.getTransaction();
 			tx.begin();
 
-			TypedQuery<Fournisseur> query = em.createQuery("select distinct f from Fournisseur f left join fetch f.produits where f.id = ?1",
+			TypedQuery<Fournisseur> query = em.createQuery(
+					"select distinct f from Fournisseur f left join fetch f.produits where f.id = ?1",
 					Fournisseur.class);
 			query.setParameter(1, id);
 			Fournisseur fournisseur = query.getSingleResult();
 
 			optFournisseur = Optional.of(fournisseur);
+
+			tx.commit();
+		} catch (Exception e) {
+			if (tx != null && tx.isActive()) {
+				tx.rollback();
+			}
+			e.printStackTrace();
+		} finally {
+			if (em != null) {
+				em.close();
+			}
+		}
+
+		return optFournisseur;
+	}
+
+	@Override
+	public Optional<Long> findClientIdByAdresseId(Long id) {
+		Optional<Long> optClient = Optional.empty();
+
+		EntityManager em = null;
+		EntityTransaction tx = null;
+
+		try {
+			em = emf.createEntityManager();
+			tx = em.getTransaction();
+			tx.begin();
+
+			TypedQuery<Long> query = em.createQuery("select c.id from Client c where c.adresse.id = ?1", Long.class);
+			query.setParameter(1, id);
+			Long clientId = query.getSingleResult();
+
+			optClient = Optional.of(clientId);
+
+			tx.commit();
+		} catch (Exception e) {
+			if (tx != null && tx.isActive()) {
+				tx.rollback();
+			}
+			e.printStackTrace();
+		} finally {
+			if (em != null) {
+				em.close();
+			}
+		}
+
+		return optClient;
+	}
+
+	@Override
+	public Optional<Long> findFournisseurIdByAdresseId(Long id) {
+		Optional<Long> optFournisseur = Optional.empty();
+
+		EntityManager em = null;
+		EntityTransaction tx = null;
+
+		try {
+			em = emf.createEntityManager();
+			tx = em.getTransaction();
+			tx.begin();
+
+			TypedQuery<Long> query = em.createQuery("select f.id from Fournisseur f join f.adresses a where a.id = ?1",
+					Long.class);
+			query.setParameter(1, id);
+			Long fournisseurId = query.getSingleResult();
+
+			optFournisseur = Optional.of(fournisseurId);
 
 			tx.commit();
 		} catch (Exception e) {

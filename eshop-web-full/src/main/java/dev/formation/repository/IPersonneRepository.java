@@ -15,4 +15,8 @@ public interface IPersonneRepository extends IRepository<Personne, Long> {
 	List<Fournisseur> findAllFournisseur();
 	
 	Optional<Fournisseur> findFournisseurByIdWithProduits(Long id);
+	
+	Optional<Long> findClientIdByAdresseId(Long id);
+	
+	Optional<Long> findFournisseurIdByAdresseId(Long id);
 }

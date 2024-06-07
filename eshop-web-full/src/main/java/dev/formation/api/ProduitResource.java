@@ -7,8 +7,8 @@ import com.fasterxml.jackson.annotation.JsonView;
 
 import dev.formation.api.views.Views;
 import dev.formation.exception.EShopException;
-import dev.formation.model.Fournisseur;
-import dev.formation.repository.IPersonneRepository;
+import dev.formation.model.Produit;
+import dev.formation.repository.IProduitRepository;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
@@ -24,61 +24,63 @@ import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Response.Status;
 import jakarta.ws.rs.core.UriInfo;
 
-@Path("/fournisseur")
-public class FournisseurResource {
+@Path("/produit")
+public class ProduitResource {
 
 	@Inject
-	private IPersonneRepository personneRepository;
+	private IProduitRepository produitRepository;
 
 	@GET
 	@Produces({ MediaType.APPLICATION_JSON })
-	@JsonView(Views.ViewFournisseur.class)
+	@JsonView(Views.ViewProduit.class)
 	public Response getAll() {
-		return Response.ok(personneRepository.findAllFournisseur()).build();
+		return Response.ok(produitRepository.findAll()).build();
 	}
 
 	@GET
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	@JsonView(Views.ViewFournisseurProduits.class)
+	@JsonView(Views.ViewProduitCommentaires.class)
 	public Response get(@PathParam("id") Long id) {
-		Optional<Fournisseur> optFournisseur = personneRepository.findFournisseurByIdWithProduits(id);
+		Optional<Produit> optProduit = produitRepository.findProduitByIdWithCommentaires(id);
 
-		if (optFournisseur.isEmpty()) {
+		if (optProduit.isEmpty()) {
 			return Response.status(Status.NOT_FOUND).build();
 		}
 
-		return Response.ok(optFournisseur.get()).build();
+		return Response.ok(optProduit.get()).build();
 	}
 
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response post(Fournisseur fournisseur, @Context UriInfo uriInfo) {
+	@JsonView(Views.ViewProduit.class)
+	public Response post(Produit produit, @Context UriInfo uriInfo) {
 		try {
-			fournisseur = (Fournisseur) personneRepository.save(fournisseur);
+			produit = (Produit) produitRepository.save(produit);
 
-			if (fournisseur.getId() != null) {
-				URI location = uriInfo.getRequestUriBuilder().path("" + fournisseur.getId()).build();
+			if (produit.getId() != null) {
+				URI location = uriInfo.getRequestUriBuilder().path("" + produit.getId()).build();
 
-				return Response.created(location).entity(fournisseur).build();
+				return Response.created(location).entity(produit).build();
 			}
 		} catch (EShopException ex) {
 			return Response.status(Status.BAD_REQUEST).type(MediaType.TEXT_PLAIN).entity(ex.getMessage()).build();
 		}
 
-		return Response.notModified().entity(fournisseur).build();
+		return Response.notModified().entity(produit).build();
 	}
 
 	@PUT
 	@Path("/{id}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response put(Fournisseur fournisseur, @PathParam("id") Long id) {
-		if (id.equals(fournisseur.getId())) {
-			fournisseur = (Fournisseur) personneRepository.save(fournisseur);
+	@JsonView(Views.ViewProduit.class)
+	public Response put(Produit produit, @PathParam("id") Long id) {
+		if (id.equals(produit.getId())) {
+			produit = (Produit) produitRepository.save(produit);
 
-			return Response.ok(fournisseur).build();
+			return Response.ok(produit).build();
 		}
 
 		return Response.notModified().build();
@@ -87,7 +89,7 @@ public class FournisseurResource {
 	@DELETE
 	@Path("/{id}")
 	public Response delete(@PathParam("id") Long id) {
-		if (personneRepository.deleteById(id)) {
+		if (produitRepository.deleteById(id)) {
 			return Response.noContent().build();
 		}
 

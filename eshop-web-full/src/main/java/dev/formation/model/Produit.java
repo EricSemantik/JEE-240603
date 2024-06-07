@@ -3,7 +3,6 @@ package dev.formation.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 
 import dev.formation.api.views.Views;
@@ -23,27 +22,34 @@ import jakarta.persistence.Table;
 public class Produit {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@JsonView(Views.ViewBasic.class)
 	private Long id;
 
 	@Column(length = 150)
+	@JsonView(Views.ViewBasic.class)
 	private String nom;
 
+	@JsonView(Views.ViewBasic.class)
 	private Double prix;
 
 	@Column(name = "ref", length = 100)
+	@JsonView(Views.ViewBasic.class)
 	private String reference;
 
 	@Column(length = 100)
+	@JsonView(Views.ViewBasic.class)
 	private String modele;
 
 	@ManyToOne
 	@JoinColumn(name = "fournisseur_id")
+	@JsonView(Views.ViewProduit.class)
 	private Fournisseur fournisseur;
 
 	@OneToMany(mappedBy = "produit")
 	private List<CommandeDetail> commandeDetails = new ArrayList<>();
 
 	@OneToMany(mappedBy = "produit")
+	@JsonView(Views.ViewProduitCommentaires.class)
 	private List<Commentaire> commentaires = new ArrayList<>();
 
 	public Produit() {

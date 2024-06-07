@@ -15,6 +15,10 @@ public interface Views {
 	
 	public static interface ViewFournisseurProduits extends ViewFournisseur {}
 	
+	public static interface ViewProduit extends ViewBasic {}
+	
+	public static interface ViewProduitCommentaires extends ViewProduit {}
+	
 	public static interface ViewUtilisateur extends ViewBasic {}
 	
 	public static interface ViewUtilisateurDetail extends ViewUtilisateur {}

@@ -175,5 +175,39 @@ public class ProduitRepositoryJpa implements IProduitRepository {
 
 		return produits;
 	}
+	
+	@Override
+	public Optional<Produit> findProduitByIdWithCommentaires(Long id) {
+		Optional<Produit> optProduit = Optional.empty();
+
+		EntityManager em = null;
+		EntityTransaction tx = null;
+
+		try {
+			em = emf.createEntityManager();
+			tx = em.getTransaction();
+			tx.begin();
+
+			TypedQuery<Produit> query = em.createQuery("select distinct p from Produit p left join fetch p.commentaires where p.id = ?1",
+					Produit.class);
+			query.setParameter(1, id);
+			Produit produit = query.getSingleResult();
+
+			optProduit = Optional.of(produit);
+
+			tx.commit();
+		} catch (Exception e) {
+			if (tx != null && tx.isActive()) {
+				tx.rollback();
+			}
+			e.printStackTrace();
+		} finally {
+			if (em != null) {
+				em.close();
+			}
+		}
+
+		return optProduit;
+	}
 
 }
